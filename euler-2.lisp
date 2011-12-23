@@ -15,23 +15,27 @@
 (defun euler-2 ()
   (reduce #'+ 
 	  (remove-if-not #'evenp 
-			 (lazy-list-map #'fib #'(lambda (x)
-						  (< x 4000000))))))
+			 (lazy-list-map #'fib 
+					#'(lambda (x)
+					    (< x 4000000))
+					1))))
 
 (defun fib (n)
-  (fib-helper 0 1 n))
+  (labels ((fib-helper (a b n)
+	     (let ((c (+ a b)))
+	       (if (>= (1- n) 0)
+		   (fib-helper b c (1- n))
+		   c))))
+    (fib-helper 0 1 n)))
 
-(defun fib-helper (a b n)
-  (let ((c (+ a b)))
-    (if (>= (1- n) 0)
-	(fib-helper b c (1- n))
-	c)))
-
-(defun lazy-list-map (map-f map-check)
-  (reverse (lazy-list-map-helper nil map-f map-check)))
-
-(defun lazy-list-map-helper (l map-f map-check)
-  (let ((mapped-index (funcall map-f (1+ (length l)))))
-    (if (funcall map-check mapped-index)
-	(lazy-list-map-helper (cons mapped-index l) map-f map-check)
-	l)))
+;; A cool function. For each index in a list we take that index, apply an offset
+;; to it and then call map-f on it. If it passes our map-check-f we add it to our
+;; list we are making, increment our index and repeat. If we do not pass we just
+;; return the list we have constructed.
+(defun lazy-list-map (map-f map-check-f offset)
+  (labels ((lazy-list-map-helper (l map-f map-check-f)
+	     (let ((mapped-index (funcall map-f (+ offset (length l)))))
+	       (if (funcall map-check-f mapped-index)
+		   (lazy-list-map-helper (cons mapped-index l) map-f map-check-f)
+		   l))))
+    (reverse (lazy-list-map-helper nil map-f map-check-f))))
