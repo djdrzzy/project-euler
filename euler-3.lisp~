@@ -1,0 +1,27 @@
+;; Problem 3
+
+;; The prime factors of 13195 are 5, 7, 13 and 29.
+
+;; What is the largest prime factor of the number 600851475143?
+
+;; In number theory, the prime factors of a positive integer are the prime
+;; numbers that divide that integer exactly, without leaving a remainder.
+
+
+;; So we need to check all the numbers and for every number that divides into
+;; our number to check we check if it is prime.
+
+
+(defun euler-3 ()
+  (car (last (let ((max 600851475143))
+	       (loop for i from 1 to max
+		  when (and (zerop (rem max i))
+			    (primep i))
+		  collect i)))))
+
+
+(defun primep (num)
+  (eq 1 (length (loop for i from 1 to (floor (sqrt num))
+		   when (zerop (rem num i))
+		   collect i))))
+
