@@ -6,14 +6,13 @@
 ;; What is the smallest positive number that is evenly divisible by all of the
 ;; numbers from 1 to 20?
 
-;; This should be brute force-ible as well...?
+;; Hunh! So turns out we can brute force it fairly quickly.
 
-;; Up to 18 is doable... 19 is taking a long time... Lets go get a drink... Nope
-;; still going. Durn.
+;; Solution should be 232792560
 
 (defun euler-5 ()
-  (loop for i from 1 do
-       (let ((l (loop for j from 1 to 19
+  (loop for i from 20 by 20 do
+       (let ((l (loop for j from 1 to 20
 		   collect (rem i j))))
-	 (when (zerop (length (remove-if #'(lambda (x) (eq x 0)) l)))
+	 (when (zerop (length (remove-if #'zerop l)))
 	   (return-from euler-5 i)))))
