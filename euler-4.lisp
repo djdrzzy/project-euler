@@ -31,11 +31,15 @@
     (p-helper (string->list s))))
 
 (defun string->list (s)
+  "Converts a string to a list"
   (coerce s 'list))
 
 (defun end (l)
+  "Returns the last element in a list. Same as the function 'last' but returns
+the 'car'"
   (car (last l)))
 
 (defun middle (l)
+  "Returns the middle of the list, without the first and last element."
   (when (> (length l) 2)
     (subseq l 1 (1- (length l)))))
