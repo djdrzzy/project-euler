@@ -21,7 +21,7 @@
 	(num-to-check 3)
 	(slice-to-check nil))
     (loop
-       (setf slice-to-check (subseq set-of-primes 0 (round (sqrt n))))
+       (setf slice-to-check (subseq set-of-primes 0 (round (sqrt array-index))))
        (when (notany #'(lambda (p) 
 			 (zerop (rem num-to-check p))) 
 		     slice-to-check)
