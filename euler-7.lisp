@@ -10,7 +10,7 @@
   (first (multiple-value-list (nth-prime 1000000))))
 
 (defun nth-prime (n)
-  (let ((set-of-primes (make-array n :element-type 'fixnum :initial-element 2))
+  (let ((set-of-primes (make-array n :initial-element 2))
 	(array-index 1)
 	(current-prime 2)
 	(num-to-check 3))
