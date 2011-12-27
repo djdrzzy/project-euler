@@ -4,19 +4,29 @@
 
 ;; What is the 10 001st prime number?
 
-(defun euler-6 ()
+;; Result should be 104743
+
+(defun euler-7 ()
+  (first (multiple-value-list (nth-prime 10001))))
 
 
+;; We could turn that not any into a loop... and then up to the sqrt of the 
+;; n we are checking. That would cut our time down a lot...  
+(defun nth-prime (n)
+  (let ((set-of-primes (make-array n 
+				   :element-type 'fixnum 
+				   :initial-element 2))
+	(array-index 1)
+	(current-prime 2)
+	(num-to-check 3))
+    (loop
+       (when (notany #'(lambda (p) 
+			 (zerop (rem num-to-check p))) 
+		     set-of-primes)
+	 (setf (aref set-of-primes array-index) num-to-check)
+	 (setf array-index (1+ array-index))
+	 (setf current-prime num-to-check))
+       (when (eq array-index n)
+	 (return-from nth-prime (values current-prime set-of-primes)))
+       (setf num-to-check (1+ num-to-check)))))
 
-(defun sieve-of-eratosthenes (n)
-  (let ((nums-to-sieve (loop for i from 2 to n collect i)))
-    (loop for i from 0 to (1- (length nums-to-sieve)) do
-	 (let* ((element (nth i nums-to-sieve))
-		(list-left (subseq nums-to-sieve (1+ i))))
-	   (when list-left
-	     (print (map 'list (lambda (x)
-				 (when (and x
-					    (eq (rem x element) 0))
-				   nil))
-			 list-left)))))
-    nums-to-sieve))
