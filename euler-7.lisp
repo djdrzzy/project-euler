@@ -7,7 +7,7 @@
 ;; Result should be 104743
 
 (defun euler-7 ()
-  (first (multiple-value-list (nth-prime 1000000))))
+  (first (multiple-value-list (nth-prime 10001))))
 
 (defun nth-prime (n)
   (let ((set-of-primes (make-array n :initial-element 2))
